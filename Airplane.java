@@ -1,3 +1,5 @@
+package Update_18112016;
+
 
 
 public class Airplane extends Thread{
@@ -119,6 +121,7 @@ public class Airplane extends Thread{
 					System.out.printf("%s To %s: Have clear to take off on runway %s.\n", Time.now(), flightNumber, getDepartureRunway() );
 					this.airportOfDeparture.updateDeparture(this);
 					System.out.printf("%s From %s: %s. Taking off on %s. Schedule time %s.\n", Time.now(), flightNumber, "ON-RUNWAY", getDepartureRunway(), Time.now().plusSeconds(pilot.getTakingOffTime()/1000));
+					
 					sleep(pilot.getTakingOffTime());
 					
 					this.airportOfDeparture.getRunway()[i].release();
@@ -136,6 +139,8 @@ public class Airplane extends Thread{
 	private void addToArrivals() throws InterruptedException{
 		setArrivalStatus(this.statuses[7]);
 		this.arrivalTime = this.expectedTime.plusSeconds(60);
+		this.finalTime = this.arrivalTime;
+
 		System.out.printf("%s From %s: Flight %s - %s.Schedule Landing Time %s.\n", Time.now(), flightNumber, airportOfDeparture.getCity(), airportOfDestination.getCity(), this.arrivalTime);
 		this.airportOfDestination.addToArrivals(this);
 		sleep(this.arrivalTime.getWaiting());
@@ -151,7 +156,7 @@ public class Airplane extends Thread{
 			int time = getRandom();
 			setArrivalStatus(this.statuses[8]);
 			System.out.printf("%s From %s: There is no free runway. %s until %s. \n", Time.now(), flightNumber, "EXPECTED", Time.now().plusSeconds(time/1000));
-			setExpectedTime(Time.now().plusSeconds(time/1000));
+			setFinalTime(Time.now().plusSeconds(time/1000));
 			this.airportOfDestination.updateArrival(this);
 			sleep(time);
 			return;	
@@ -162,7 +167,7 @@ public class Airplane extends Thread{
 						int time = getRandom();
 						setArrivalStatus(this.statuses[8]);
 						System.out.printf("%s From %s: There is no free runway. %s until %s. \n", Time.now(), flightNumber, "EXPECTED", Time.now().plusSeconds(time/1000));
-						setExpectedTime(Time.now().plusSeconds(time/1000));
+						setFinalTime(Time.now().plusSeconds(time/1000));
 						this.airportOfDestination.updateArrival(this);
 						sleep(time);
 						return;			
@@ -179,7 +184,6 @@ public class Airplane extends Thread{
 					setFinalTime(Time.now());
 					setArrivalStatus(this.statuses[10]);
 					System.out.printf("%s From %s: LANDED. \n", Time.now(), flightNumber);
-					setExpectedTime(Time.now());
 					this.airportOfDestination.updateArrival(this);
 					return;				
 				}
