@@ -135,7 +135,8 @@ public class Airplane extends Thread{
 	
 	private void addToArrivals() throws InterruptedException{
 		setArrivalStatus(this.statuses[7]);
-		System.out.printf("%s From %s: Flight %s - %s.Schedule Landing Time %s.\n", Time.now(), flightNumber, airportOfDeparture.getCity(), airportOfDestination.getCity(), this.arrivalTime.plusSeconds(60));
+		this.arrivalTime = this.expectedTime.plusSeconds(60);
+		System.out.printf("%s From %s: Flight %s - %s.Schedule Landing Time %s.\n", Time.now(), flightNumber, airportOfDeparture.getCity(), airportOfDestination.getCity(), this.arrivalTime);
 		this.airportOfDestination.addToArrivals(this);
 		sleep(this.arrivalTime.getWaiting());
 	}
