@@ -1,7 +1,3 @@
-package Update_18112016;
-
-
-
 public class Airplane extends Thread{
 
 	//variables
@@ -120,7 +116,7 @@ public class Airplane extends Thread{
 					setDepartureRunway(i+1);
 					System.out.printf("%s To %s: Have clear to take off on runway %s.\n", Time.now(), flightNumber, getDepartureRunway() );
 					this.airportOfDeparture.updateDeparture(this);
-					System.out.printf("%s From %s: %s. Taking off on %s. Schedule time %s.\n", Time.now(), flightNumber, "ON-RUNWAY", getDepartureRunway(), Time.now().plusSeconds(pilot.getTakingOffTime()/1000));
+					System.out.printf("%s From %s: %s. Taking off on runway %s. Schedule time %s.\n", Time.now(), flightNumber, "ON-RUNWAY", getDepartureRunway(), Time.now().plusSeconds(pilot.getTakingOffTime()/1000));
 					
 					sleep(pilot.getTakingOffTime());
 					
@@ -138,8 +134,8 @@ public class Airplane extends Thread{
 	
 	private void addToArrivals() throws InterruptedException{
 		setArrivalStatus(this.statuses[7]);
-		this.arrivalTime = this.expectedTime.plusSeconds(60);
-		this.finalTime = this.arrivalTime;
+		this.arrivalTime = Time.now();
+		this.finalTime = this.arrivalTime.plusSeconds(60);
 
 		System.out.printf("%s From %s: Flight %s - %s.Schedule Landing Time %s.\n", Time.now(), flightNumber, airportOfDeparture.getCity(), airportOfDestination.getCity(), this.arrivalTime);
 		this.airportOfDestination.addToArrivals(this);
@@ -176,8 +172,9 @@ public class Airplane extends Thread{
 				else{ 
 					setArrivalStatus(this.statuses[9]);
 					setArrivalRunway(i+1);
-					System.out.printf("%s From %s: LANDING. Schedule Time is %s. \n", Time.now(), flightNumber, Time.now().plusSeconds(pilot.getLandingTime()/1000));
+					System.out.printf("%s To %s: Have clear to land. Runway %s.\n", Time.now(), flightNumber, getDepartureRunway() );
 					this.airportOfDestination.updateArrival(this);
+					System.out.printf("%s From %s: LANDING. Schedule Time is %s. \n", Time.now(), flightNumber, Time.now().plusSeconds(pilot.getLandingTime()/1000));
 					sleep(pilot.getLandingTime());
 					this.airportOfDestination.getRunway()[i].release();
 					this.finishedLanding=true;
