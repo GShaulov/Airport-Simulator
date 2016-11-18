@@ -21,7 +21,7 @@ public class Main {
         		int sec = (int) (Math.random()*60)+10;
         		int fly = (int) (Math.random()*25);
         		Time sheduled = new Time(Time.now().plusSeconds(sec+i));
-        		Time arrival = sheduled.plusSeconds(60);
+        		Time arrival = new Time(Time.now().plusSeconds(sec+i+60));
     			Pilot pilot = new Pilot("Pilot"+i+""+j, ((int)Math.random()*10+1));
     			if(i==j)	continue;
         		Airplane plane = new Airplane(pilot,""+ab[fly]+ab[fly+1]+i+"0"+j, airports.get(i), airports.get(j), sheduled, arrival);
